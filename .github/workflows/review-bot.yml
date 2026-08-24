@@ -16,7 +16,6 @@ jobs:
           script: |
             const pr = context.payload.pull_request;
             const { owner, repo } = context.repo;
-            const isUpdate = context.payload.action === 'synchronize';
             const body = pr.body || '';
             const branch = pr.head.ref || '';
 
@@ -24,45 +23,31 @@ jobs:
             const hasWhatWhy = /what|why|change/i.test(body);
             const branchOk = /^(fix|feat|docs|chore)\/.+/.test(branch);
 
-            if (!isUpdate) {
-              const lines = [];
-              lines.push(branchOk
-                ? '- ✅ Branch name follows `type/short-desc`'
-                : '- ⚠️ Branch name should look like `fix/1-heading-typo`');
-              lines.push(linksIssue
-                ? '- ✅ PR links an issue'
-                : '- ⚠️ Please link the issue this fixes (e.g. `Fixes #1`)');
-              lines.push(hasWhatWhy
-                ? '- ✅ Description explains the change'
-                : '- ⚠️ Add a short **What & Why** to the description');
-              lines.push('- ⚠️ Please confirm you tested the change locally (tick the box in the template)');
+            const lines = [];
+            lines.push(branchOk
+              ? '- ✅ Branch name follows `type/short-desc`'
+              : '- ⚠️ Branch name should look like `fix/1-heading-typo`');
+            lines.push(linksIssue
+              ? '- ✅ PR links an issue'
+              : '- ⚠️ Please link the issue this fixes (e.g. `Fixes #1`)');
+            lines.push(hasWhatWhy
+              ? '- ✅ Description explains the change'
+              : '- ⚠️ Add a short **What & Why** to the description');
 
-              const msg = [
-                "👋 Thanks for your pull request! I'm the **OpenNest Review Bot**.",
-                "",
-                "Here's my first pass:",
-                ...lines,
-                "",
-                "**Requesting changes** for now — address the ⚠️ points above, push an update to this branch, and I'll automatically re-review.",
-                "",
-                "> Remember: *changes requested* is a normal, healthy part of open source. Every engineer gets review comments — it's how we ship quality together. 💪"
-              ].join('\n');
+            const msg = [
+              "👋 Thanks for your pull request! I'm the **OpenNest Review Bot**.",
+              "",
+              "I read through your PR carefully — here's my pass:",
+              ...lines,
+              "",
+              "Your change actually looks well aligned and reasonable. 👏 But heads up: **this is a training / dummy repository**, so I'm **requesting changes** here rather than merging — the goal is for you to experience the full review loop, not to ship to production.",
+              "",
+              "**What to do next:** don't worry about \"fixing\" anything specific — this is expected. Feel free to keep experimenting, open more PRs, and practise the workflow.",
+              "",
+              "> Remember: *changes requested* is a normal, healthy part of open source. Every engineer gets review comments — it's how we ship quality together. Thanks for raising this PR, and keep contributing! 🪺💪"
+            ].join('\n');
 
-              await github.rest.pulls.createReview({
-                owner, repo, pull_number: pr.number,
-                event: 'REQUEST_CHANGES', body: msg
-              });
-            } else {
-              const msg = [
-                "🎉 Thanks for the update — your changes address the review.",
-                "",
-                "✅ Looks good. **Approving** this pull request.",
-                "",
-                "> You just completed the full loop: **open → review → changes requested → fix → approved.** That's exactly how real open source works. Nicely done! 🪺"
-              ].join('\n');
-
-              await github.rest.pulls.createReview({
-                owner, repo, pull_number: pr.number,
-                event: 'APPROVE', body: msg
-              });
-            }
+            await github.rest.pulls.createReview({
+              owner, repo, pull_number: pr.number,
+              event: 'REQUEST_CHANGES', body: msg
+            });
