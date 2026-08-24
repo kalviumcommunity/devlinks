@@ -1,0 +1,68 @@
+name: OpenNest Review Bot
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const { owner, repo } = context.repo;
+            const isUpdate = context.payload.action === 'synchronize';
+            const body = pr.body || '';
+            const branch = pr.head.ref || '';
+
+            const linksIssue = /(fix|close|resolve)(s|d)?\s+#\d+/i.test(body) || /#\d+/.test(body);
+            const hasWhatWhy = /what|why|change/i.test(body);
+            const branchOk = /^(fix|feat|docs|chore)\/.+/.test(branch);
+
+            if (!isUpdate) {
+              const lines = [];
+              lines.push(branchOk
+                ? '- ✅ Branch name follows `type/short-desc`'
+                : '- ⚠️ Branch name should look like `fix/1-heading-typo`');
+              lines.push(linksIssue
+                ? '- ✅ PR links an issue'
+                : '- ⚠️ Please link the issue this fixes (e.g. `Fixes #1`)');
+              lines.push(hasWhatWhy
+                ? '- ✅ Description explains the change'
+                : '- ⚠️ Add a short **What & Why** to the description');
+              lines.push('- ⚠️ Please confirm you tested the change locally (tick the box in the template)');
+
+              const msg = [
+                "👋 Thanks for your pull request! I'm the **OpenNest Review Bot**.",
+                "",
+                "Here's my first pass:",
+                ...lines,
+                "",
+                "**Requesting changes** for now — address the ⚠️ points above, push an update to this branch, and I'll automatically re-review.",
+                "",
+                "> Remember: *changes requested* is a normal, healthy part of open source. Every engineer gets review comments — it's how we ship quality together. 💪"
+              ].join('\n');
+
+              await github.rest.pulls.createReview({
+                owner, repo, pull_number: pr.number,
+                event: 'REQUEST_CHANGES', body: msg
+              });
+            } else {
+              const msg = [
+                "🎉 Thanks for the update — your changes address the review.",
+                "",
+                "✅ Looks good. **Approving** this pull request.",
+                "",
+                "> You just completed the full loop: **open → review → changes requested → fix → approved.** That's exactly how real open source works. Nicely done! 🪺"
+              ].join('\n');
+
+              await github.rest.pulls.createReview({
+                owner, repo, pull_number: pr.number,
+                event: 'APPROVE', body: msg
+              });
+            }

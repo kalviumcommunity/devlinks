@@ -1,0 +1,19 @@
+:root { --brand: #4f46e5; }
+
+body { font-family: system-ui, sans-serif; background: #f5f6fb; margin: 0; color: #1b1f2a; }
+
+.nav { display: flex; gap: 1rem; align-items: center; padding: 1rem 1.5rem; background: #fff; }
+/* BUG (issue #8): nav is not responsive; items overflow on small screens.
+   (No @media rule / no flex-wrap.) */
+
+.card { max-width: 420px; margin: 2rem auto; background: #fff; border-radius: 16px; padding: 2rem; text-align: center; }
+.avatar { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; }
+
+.links { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1.2rem; }
+
+.btn { display: inline-block; padding: 0.7rem 1rem; border-radius: 10px; text-decoration: none; border: none; cursor: pointer; font-size: 1rem; }
+/* BUG (issue #5): primary button uses a grey placeholder instead of the brand colour --brand */
+.btn-primary { background: #999999; color: #fff; }
+/* BUG (issue #12): buttons have no hover state */
+
+footer { margin-top: 1.5rem; color: #8a90a2; font-size: 0.85rem; }
