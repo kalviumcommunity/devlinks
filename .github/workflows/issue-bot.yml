@@ -1,0 +1,53 @@
+name: OpenNest Issue Bot
+on:
+  issues:
+    types: [opened]
+  issue_comment:
+    types: [created]
+
+permissions:
+  issues: write
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    # Skip comments made on pull requests (issue_comment fires for both).
+    if: ${{ !github.event.issue.pull_request }}
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const issue = context.payload.issue;
+            const actor = context.payload.sender.login;
+
+            // Never reply to our own bot messages (prevents an infinite loop).
+            if (actor === 'github-actions[bot]' || actor.endsWith('[bot]')) {
+              console.log('Skipping: triggered by a bot.');
+              return;
+            }
+
+            const isNewIssue = context.eventName === 'issues';
+
+            const openedMsg = [
+              `👋 Hi @${actor}, thanks for taking the time to raise this issue in our repo!`,
+              "",
+              "I'm the **OpenNest Issue Bot**. A maintainer will take a look soon. In the meantime:",
+              "- If this is a bug, make sure you've added **steps to reproduce**.",
+              "- Want to fix it yourself? Comment to claim it, then follow **CONTRIBUTING.md** to open a PR.",
+              "",
+              "> Raising a clear issue is a real contribution on its own. Thanks for spending your time here — welcome to OpenNest! 🪺"
+            ].join('\n');
+
+            const commentMsg = [
+              `💬 Thanks for the update, @${actor}!`,
+              "",
+              "Appreciate you staying engaged on this thread. A maintainer will follow up — and if you're planning to work on it, remember to read **CONTRIBUTING.md** and link this issue in your PR with `Fixes #${issue.number}`.",
+              "",
+              "> Every comment and question helps the project. Thanks for being part of OpenNest! 💚🪺"
+            ].join('\n');
+
+            await github.rest.issues.createComment({
+              owner, repo, issue_number: issue.number,
+              body: isNewIssue ? openedMsg : commentMsg
+            });
