@@ -2,7 +2,7 @@
 
 body { font-family: system-ui, sans-serif; background: #f5f6fb; margin: 0; color: #1b1f2a; }
 
-.nav { display: flex; gap: 1rem; align-items: center; padding: 1rem 1.5rem; background: #fff; }
+.nav { display: flex; gap: 1rem; align-items: center; padding: 1rem 1.5rem; background: #fff; flex-wrap: wrap; }
 /* BUG (issue #8): nav is not responsive; items overflow on small screens.
    (No @media rule / no flex-wrap.) */
 
