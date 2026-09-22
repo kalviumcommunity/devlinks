@@ -13,7 +13,7 @@ body { font-family: system-ui, sans-serif; background: #f5f6fb; margin: 0; color
 
 .btn { display: inline-block; padding: 0.7rem 1rem; border-radius: 10px; text-decoration: none; border: none; cursor: pointer; font-size: 1rem; }
 /* BUG (issue #5): primary button uses a grey placeholder instead of the brand colour --brand */
-.btn-primary { background: #999999; color: #fff; }
+.btn-primary { background: #999999; color: #4f46e5; }
 /* BUG (issue #12): buttons have no hover state */
 
 footer { margin-top: 1.5rem; color: #8a90a2; font-size: 0.85rem; }
