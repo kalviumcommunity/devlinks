@@ -1,12 +1,15 @@
-// BUG (issue #9): leftover debug log should be removed
-console.log("debug: script loaded");
-
-// BUG (issue #6): the button id in the HTML is "copy-btn", but this looks for "copyBtn",
-// so the copy button does nothing.
-const btn = document.getElementById("copyBtn");
-if (btn) {
-  btn.addEventListener("click", () => {
-    navigator.clipboard.writeText(window.location.href);
-    btn.textContent = "Copied!";
+// Copy profile link button — matches id in HTML and handles clipboard errors
+const btn = document.getElementById("copy-btn");
+if (btn && navigator.clipboard) {
+  btn.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      btn.textContent = "Copied!";
+      // revert label after a short delay
+      setTimeout(() => { btn.textContent = "Copy profile link"; }, 2000);
+    } catch (err) {
+      // Keep a helpful console message for failures (e.g., insecure context)
+      console.error("Copy failed:", err);
+    }
   });
 }

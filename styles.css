@@ -2,9 +2,8 @@
 
 body { font-family: system-ui, sans-serif; background: #f5f6fb; margin: 0; color: #1b1f2a; }
 
-.nav { display: flex; gap: 1rem; align-items: center; padding: 1rem 1.5rem; background: #fff; }
-/* BUG (issue #8): nav is not responsive; items overflow on small screens.
-   (No @media rule / no flex-wrap.) */
+.nav { display: flex; gap: 1rem; align-items: center; padding: 1rem 1.5rem; background: #fff; justify-content: space-between; flex-wrap: wrap; }
+/* nav is responsive: uses flex-wrap and space-between to avoid overflow on small screens */
 
 .card { max-width: 420px; margin: 2rem auto; background: #fff; border-radius: 16px; padding: 2rem; text-align: center; }
 .avatar { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; }
@@ -12,8 +11,9 @@ body { font-family: system-ui, sans-serif; background: #f5f6fb; margin: 0; color
 .links { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1.2rem; }
 
 .btn { display: inline-block; padding: 0.7rem 1rem; border-radius: 10px; text-decoration: none; border: none; cursor: pointer; font-size: 1rem; }
-/* BUG (issue #5): primary button uses a grey placeholder instead of the brand colour --brand */
-.btn-primary { background: #999999; color: #fff; }
-/* BUG (issue #12): buttons have no hover state */
+/* primary button uses brand color and includes hover/focus states */
+.btn-primary { background: var(--brand); color: #fff; transition: background 150ms ease, transform 120ms ease; }
+.btn-primary:hover, .btn-primary:focus { filter: brightness(0.95); transform: translateY(-1px); }
+.btn-primary:active { transform: translateY(0); }
 
 footer { margin-top: 1.5rem; color: #8a90a2; font-size: 0.85rem; }

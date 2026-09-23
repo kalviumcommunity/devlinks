@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DevLinks</title>
   <link rel="stylesheet" href="styles.css" />
-  <!-- BUG (issue #11): favicon link is missing -->
+  <!-- favicon (inline SVG) to avoid external asset dependency -->
+  <link rel="icon" href='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪺</text></svg>' />
 </head>
 <body>
   <nav class="nav">
@@ -15,24 +16,24 @@
   </nav>
 
   <main class="card">
-    <!-- BUG (issue #2): image is missing alt text -->
-    <img class="avatar" src="assets/avatar.png" />
+    <!-- image has alt text for accessibility -->
+    <img class="avatar" src="assets/avatar.png" alt="DevLinks avatar" />
 
-    <!-- BUG (issue #1): "Wecome" should be "Welcome" -->
-    <h1>Wecome to DevLinks</h1>
+    <!-- corrected heading spelling -->
+    <h1>Welcome to DevLinks</h1>
 
-    <!-- BUG (issue #7): placeholder bio text left in -->
-    <p id="bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    <!-- short descriptive bio -->
+    <p id="bio">A curated list of links and profiles for developers — share, copy, and connect.</p>
 
     <section id="links" class="links">
-      <!-- BUG (issue #3): GitHub URL is broken ("htps") -->
-      <a class="btn btn-primary" href="htps://github.com/opennest">GitHub</a>
+      <!-- fixed GitHub URL -->
+      <a class="btn btn-primary" href="https://github.com/opennest" target="_blank" rel="noopener">GitHub</a>
       <a class="btn btn-primary" href="https://twitter.com/opennest">Twitter</a>
       <button id="copy-btn" class="btn btn-primary">Copy profile link</button>
     </section>
 
-    <!-- BUG (issue #4): footer year is outdated -->
-    <footer>© 2019 OpenNest · DevLinks</footer>
+    <!-- updated footer year -->
+    <footer>© 2026 OpenNest · DevLinks</footer>
   </main>
 
   <script src="script.js"></script>
