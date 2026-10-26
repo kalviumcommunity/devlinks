@@ -12,8 +12,16 @@
 A single-page site that shows a profile, a short bio, and a list of link buttons. Pure HTML/CSS/JS — no frameworks, no build tools.
 
 ## Run it locally
-1. Fork this repository and clone your fork.
-2. Open `index.html` in your browser. That's it — you should see the DevLinks page.
+No installation or build tools are required.
+
+1. Fork this repository and clone your fork:
+   ```bash
+   git clone <your-fork-url>
+   ```
+2. Open the cloned repository folder.
+3. Open `index.html` in your browser to view the DevLinks page.
+
+That's it! The project uses plain HTML, CSS, and JavaScript, so you can run it directly in your browser.
 
 ## Contributing
 We'd love your help! Please read **[CONTRIBUTING.md](CONTRIBUTING.md)** and our **[Code of Conduct](CODE_OF_CONDUCT.md)** first. Look for issues labelled **`good first issue`** to get started.
