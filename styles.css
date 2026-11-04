@@ -15,5 +15,9 @@ body { font-family: system-ui, sans-serif; background: #f5f6fb; margin: 0; color
 /* BUG (issue #5): primary button uses a grey placeholder instead of the brand colour --brand */
 .btn-primary { background: #999999; color: #fff; }
 /* BUG (issue #12): buttons have no hover state */
+.btn-primary:hover {
+  opacity: 0.85;
+  transition: all 0.2s ease;
+}
 
 footer { margin-top: 1.5rem; color: #8a90a2; font-size: 0.85rem; }
